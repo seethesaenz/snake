@@ -12,6 +12,7 @@ class Game:
         self.screen_height = 860
         self.tile_size = 20
         self.tile_len = 43
+        self.settings = Settings()
 
         pygame.display.set_caption("Snake")
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -61,14 +62,16 @@ class Game:
             self.drawer()
             if self.begin:
                 self.start()
-
             else:
                 self.snake.movement(self.direction)
+                if self.snake.collision():
+                    self.run = False
+                if self.snake.snake_arr[0].colliderect(self.apple.rect):
+                    self.snake.grow()
+                    self.apple.generate(self.snake.snake_arr)
                 self.drawer()
-            
             self.clock.tick(10)
             pygame.display.flip()
-
         pygame.quit()
 
     def drawer(self):
@@ -113,7 +116,10 @@ class Game:
 
     
     def start(self):
-        pass
+        self.snake = Snake(self.screen, self.settings.tile_size, self.start_pos)
+        self.apple = Apple(self.screen, self.settings.tile_size, self.settings.tile_len, self.snake.snake_arr)
+        self.direction = (0, -1)
+
 
 if __name__ == "__main__":
     game = Game()

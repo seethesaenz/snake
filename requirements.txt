@@ -1,0 +1,3 @@
+
+# Pygame is a set of Python modules designed for writing video games
+pygame==2.6.1
